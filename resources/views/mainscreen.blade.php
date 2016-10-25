@@ -67,19 +67,19 @@
 
 <?php
 	class Agri extends Eloquent{
-		protected $table='Agri';
+		protected $table='Agri';//Database table settings
 	}
 
 	$filename='agri.txt';
 	if (File::exists($filename))
 	{
-		$contents = File::get($filename);
-		$contents = str_replace("\n", '  ', $contents);
-		$contents = str_replace("  ", ',', $contents);
-		$arr = explode(",", $contents);
-		$arr = array_diff($arr, [""]);
-		$arr = array_map('trim',$arr);
-		array_splice($arr, 0, 5);
+		$contents = File::get($filename);//Read the file
+		$contents = str_replace("\n", '  ', $contents);//Remove enter
+		$contents = str_replace("  ", ',', $contents);//Replace comma instead of two space
+		$arr = explode(",", $contents);//Virgüle göre array oluşturulur
+		$arr = array_diff($arr, [""]);//Array içerisinde ki boşluklar atılır
+		$arr = array_map('trim',$arr);//Delete spaces
+		array_splice($arr, 0, 5);//Başlı isimleri kaldırılır
 		$list = array(
 		  array(),
 		  array(),
@@ -88,14 +88,14 @@
 		  array()
 		);
 		for($i=0; $i<count($arr); $i++){
-			array_push($list[$i % 5], $arr[$i]);
+			array_push($list[$i % 5], $arr[$i]);//Arrayde ki sütunlar ayrılır
 		}
 		for($i=0; $i<count($list[0]); $i++){
-			if(trim($list[1][$i])=="HAMUR")
+			if(trim($list[1][$i])=="HAMUR")//İlçe array i Hamur'a eşit olanlar ekrana yazılır
 			echo $list[1][$i]."\t".$list[3][$i]."<br>";
 		}
 	}
-	for($i=0; $i<count($list[0]); $i++){
+	for($i=0; $i<count($list[0]); $i++){//Record to database
 		$saveAgri=new Agri();
 		$saveAgri->IL=$list[0][$i];
 		$saveAgri->ILCE=$list[1][$i];
